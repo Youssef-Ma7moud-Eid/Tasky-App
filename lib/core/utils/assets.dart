@@ -2,6 +2,8 @@
 class Assets {
   Assets._();
   
+  static const String iconsAddIcon = "assets/icons/add-icon.png";
+
   static const String iconsCloseIcon = "assets/icons/close-icon.png";
 
   static const String iconsDeleteIcon = "assets/icons/delete-icon.png";
@@ -10,13 +12,13 @@ class Assets {
 
   static const String iconsLogoutIcon = "assets/icons/logout-icon.png";
 
-  static const String iconsPriority = "assets/icons/priority.png";
+  static const String iconsPriorityIcon = "assets/icons/priority-icon.png";
 
   static const String iconsSearchIcon = "assets/icons/search-icon.png";
 
-  static const String iconsSend = "assets/icons/send.png";
+  static const String iconsSendIcon = "assets/icons/send-icon.png";
 
-  static const String iconsTimer = "assets/icons/timer.png";
+  static const String iconsTimerIcon = "assets/icons/timer-icon.png";
 
   static const String imagesEmptyTask = "assets/images/empty_task.png";
 
