@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/features/onboarding/widgets/onboarding_view_body.dart';
 
 void main() {
   runApp(const TaskyApp());
@@ -12,7 +13,7 @@ class TaskyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      
+      home: OnboardingViewBody(),
     );
   }
 }

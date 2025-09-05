@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_native_splash: ^2.4.6
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -93,6 +94,6 @@ flutter_assets:
     - assets/icons/
   output_path: lib/core/utils/
   filename: assets.dart
-  field_prefix:
+  field_prefix: null
   ignore_comments: true
   classname: Assets
