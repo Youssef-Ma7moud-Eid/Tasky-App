@@ -3,6 +3,7 @@ import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
+import 'package:tasky/features/add-task/views/empty_tasks_view.dart';
 import 'package:tasky/features/auth/views/register_view.dart';
 import 'package:tasky/features/auth/widgets/custom_check_auth.dart';
 import 'package:tasky/features/auth/widgets/text_form_field_helper.dart';
@@ -64,7 +65,16 @@ class LoginViewBody extends StatelessWidget {
               SizedBox(height: 50),
               GestureDetector(
                 onTap: () {
-                  if (formKey.currentState!.validate()) {}
+                  if (formKey.currentState!.validate()) {
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return EmptyTasksView();
+                        },
+                      ),
+                    );
+                  }
                 },
                 child: CustomButton(title: "Login"),
               ),
