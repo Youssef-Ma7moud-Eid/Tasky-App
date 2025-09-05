@@ -3,6 +3,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
+import 'package:tasky/features/auth/views/login_view.dart';
 
 class OnboardingViewBody extends StatefulWidget {
   const OnboardingViewBody({super.key});
@@ -107,6 +108,15 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                 curve: Curves.fastOutSlowIn,
               );
             });
+          } else {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return LoginView();
+                },
+              ),
+            );
           }
         },
         label: Text(
