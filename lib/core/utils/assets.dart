@@ -30,6 +30,6 @@ class Assets {
 
   static const String imagesOnboarding3 = "assets/images/onboarding3.png";
 
-  static const String imagesPc = "assets/images/pc.lnk";
+  static const String imagesSplashAndroid12 = "assets/images/splash_android_12.png";
 }
 
