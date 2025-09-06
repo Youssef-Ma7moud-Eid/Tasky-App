@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/features/add-task/views/empty_tasks_view.dart';
+import 'package:tasky/features/add-task/views/tasks_view.dart';
 
 void main() {
   runApp(const TaskyApp());
@@ -13,7 +13,7 @@ class TaskyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: EmptyTasksView(),
+      home: TasksView(),
     );
   }
 }
