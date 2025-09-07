@@ -29,8 +29,15 @@ class EditTaskViewBody extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             GestureDetector(
-              onTap: (){},
-              child: Image.asset(Assets.iconsCloseIcon, height: 48, fit: BoxFit.fill)),
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Image.asset(
+                Assets.iconsCloseIcon,
+                height: 48,
+                fit: BoxFit.fill,
+              ),
+            ),
             SizedBox(height: 30),
             Row(
               spacing: 20,
@@ -96,7 +103,7 @@ class EditTaskViewBody extends StatelessWidget {
             ),
             Expanded(child: SizedBox()),
             GestureDetector(
-              onTap: (){},
+              onTap: () {},
               child: CustomButton(
                 title: 'Edit Task',
                 style: AppStyles.latoBold20.copyWith(

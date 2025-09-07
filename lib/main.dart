@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/features/edit-task/views/edit_task_view.dart';
+import 'package:tasky/features/add-task/views/tasks_view.dart';
 
 void main() {
   runApp(const TaskyApp());
@@ -11,6 +11,6 @@ class TaskyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: EditTaskView());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: TasksView());
   }
 }
