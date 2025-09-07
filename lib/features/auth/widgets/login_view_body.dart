@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tasky/core/functions/snak_bar.dart';
 import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
@@ -64,16 +66,49 @@ class LoginViewBody extends StatelessWidget {
               ),
               SizedBox(height: 50),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (formKey.currentState!.validate()) {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return TasksView();
-                        },
-                      ),
-                    );
+                    try {
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: email.text,
+                        password: password.text,
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                                return TasksView();
+                              },
+                        ),
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        scaffoldmessenger(
+                          context: context,
+                          color: AppColors.primaryColor,
+                          text: 'No user found for that email.',
+                        );
+                      } else if (e.code == 'wrong-password') {
+                        scaffoldmessenger(
+                          context: context,
+                          color: AppColors.primaryColor,
+                          text: 'Wrong password provided for that user.',
+                        );
+                      } else {
+                        scaffoldmessenger(
+                          context: context,
+                          color: AppColors.primaryColor,
+                          text: e.toString(),
+                        );
+                      }
+                    } catch (e) {
+                      scaffoldmessenger(
+                        context: context,
+                        color: AppColors.primaryColor,
+                        text: e.toString(),
+                      );
+                    }
                   }
                 },
                 child: CustomButton(title: "Login"),

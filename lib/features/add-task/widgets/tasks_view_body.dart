@@ -82,7 +82,7 @@ class TaskViewBody extends StatelessWidget {
                             children: [
                               Text(
                                 'Do Math Homework ',
-                                style: AppStyles.latoBold20.copyWith(
+                                style: AppStyles.latoRegular20.copyWith(
                                   color: AppColors.titleColor,
                                 ),
                               ),
@@ -103,7 +103,7 @@ class TaskViewBody extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                         color: AppColors.primaryColor,
-                                        width: 2,
+                                        width: 1.2,
                                       ),
                                       borderRadius: BorderRadius.circular(5),
                                       color: AppColors.scaffoldColor,

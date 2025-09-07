@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tasky/core/functions/snak_bar.dart';
 import 'package:tasky/core/functions/validator.dart';
@@ -82,22 +83,49 @@ class RegisterViewBody extends StatelessWidget {
               ),
               SizedBox(height: 50),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (formKey.currentState!.validate()) {
                     if (Validator.validateConfirmPassword(
                           password.text,
                           confirmPassword.text,
                         ) ==
                         null) {
-                      Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                                return LoginView();
-                              },
-                        ),
-                      );
+                      try {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                              email: email.text,
+                              password: password.text,
+                            );
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                                  return LoginView();
+                                },
+                          ),
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          scaffoldmessenger(
+                            context: context,
+                            color: AppColors.primaryColor,
+                            text: 'The password provided is too weak.',
+                          );
+                        } else if (e.code == 'email-already-in-use') {
+                          scaffoldmessenger(
+                            context: context,
+                            color: AppColors.primaryColor,
+                            text: 'The account already exists for that email.',
+                          );
+                        }
+                      } catch (e) {
+                        scaffoldmessenger(
+                          context: context,
+                          color: AppColors.primaryColor,
+                          text: e.toString(),
+                        );
+                      }
                     } else {
                       scaffoldmessenger(
                         context: context,
