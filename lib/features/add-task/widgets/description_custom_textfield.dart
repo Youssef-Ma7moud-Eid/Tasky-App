@@ -7,11 +7,13 @@ class DescriptionCustomTextField extends StatelessWidget {
   const DescriptionCustomTextField({
     super.key,
     this.onChanged,
-    required this.day,
-    required this.prority,
+    required this.priorityValueNotifier,
+    required this.dayValueNotifier,
   });
+  final ValueNotifier<int> priorityValueNotifier;
+  final ValueNotifier<DateTime> dayValueNotifier;
   final void Function(String)? onChanged;
-  final String day, prority;
+
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -31,11 +33,16 @@ class DescriptionCustomTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: AppColors.primaryColor,
               ),
-              child: Text(
-                day,
-                style: AppStyles.latoRegular16.copyWith(
-                  color: AppColors.scaffoldColor,
-                ),
+              child: ValueListenableBuilder(
+                valueListenable: dayValueNotifier,
+                builder: (context, value, child) {
+                  return Text(
+                    '${value.day}/${value.month}',
+                    style: AppStyles.latoRegular16.copyWith(
+                      color: AppColors.scaffoldColor,
+                    ),
+                  );
+                },
               ),
             ),
             Container(
@@ -52,11 +59,16 @@ class DescriptionCustomTextField extends StatelessWidget {
 
                 children: [
                   Image.asset(Assets.iconsPriorityIcon),
-                  Text(
-                    prority,
-                    style: AppStyles.latoBold20.copyWith(
-                      color: AppColors.titleColor,
-                    ),
+                  ValueListenableBuilder(
+                    valueListenable: priorityValueNotifier,
+                    builder: (context, value, child) {
+                      return Text(
+                        value.toString(),
+                        style: AppStyles.latoBold20.copyWith(
+                          color: AppColors.titleColor,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
