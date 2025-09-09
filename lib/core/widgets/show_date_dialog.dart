@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:tasky/features/add-task/widgets/show_dialog_ontap.dart';
+import 'package:tasky/features/add-task/presentation/widgets/show_dialog_ontap.dart';
 
 class ShowDateDialog extends StatefulWidget {
   const ShowDateDialog({super.key, required this.dayNotifier});

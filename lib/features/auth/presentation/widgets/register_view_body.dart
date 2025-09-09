@@ -5,20 +5,36 @@ import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
-import 'package:tasky/features/auth/views/login_view.dart';
-import 'package:tasky/features/auth/widgets/custom_check_auth.dart';
-import 'package:tasky/features/auth/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/auth/data/firebase/auth_firebase_operation.dart';
+import 'package:tasky/features/auth/presentation/views/login_view.dart';
+import 'package:tasky/features/auth/presentation/widgets/custom_check_auth.dart';
+import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
 
-class RegisterViewBody extends StatelessWidget {
+class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey();
-    final TextEditingController email = TextEditingController();
-    final TextEditingController password = TextEditingController();
-    final TextEditingController confirmPassword = TextEditingController();
+  State<RegisterViewBody> createState() => _RegisterViewBodyState();
+}
 
+class _RegisterViewBodyState extends State<RegisterViewBody> {
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+  final TextEditingController username = TextEditingController();
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    confirmPassword.dispose();
+    username.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -34,6 +50,21 @@ class RegisterViewBody extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
+              Text(
+                "UserName",
+                style: AppStyles.latoRegular20.copyWith(
+                  color: Color(0xff27282F),
+                ),
+              ),
+              SizedBox(height: 10),
+              TextFormFieldHelper(
+                controller: username,
+                onValidate: Validator.validateName,
+                hint: "enter yout name...",
+                //  onChanged: (email) {},
+                isMobile: true,
+              ),
+              SizedBox(height: 20),
               Text(
                 "Email",
                 style: AppStyles.latoRegular20.copyWith(
@@ -91,11 +122,12 @@ class RegisterViewBody extends StatelessWidget {
                         ) ==
                         null) {
                       try {
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                              email: email.text,
-                              password: password.text,
-                            );
+                        await AuthFirebaseOperation.signUp(
+                          username: username.text,
+                          email: email.text,
+                          password: password.text,
+                        );
+
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(

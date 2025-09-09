@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
-import 'package:tasky/features/add-task/widgets/description_custom_textfield.dart';
-import 'package:tasky/features/add-task/widgets/task_detail_info.dart';
-import 'package:tasky/features/auth/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/add-task/presentation/widgets/description_custom_textfield.dart';
+import 'package:tasky/features/add-task/presentation/widgets/task_detail_info.dart';
+import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
 
 class AddTaskButtonSheet extends StatefulWidget {
   const AddTaskButtonSheet({super.key});

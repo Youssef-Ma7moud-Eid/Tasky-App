@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
-import 'package:tasky/features/add-task/widgets/add_task_button_sheet.dart';
-import 'package:tasky/features/add-task/widgets/tasks_view_body.dart';
+import 'package:tasky/features/add-task/presentation/widgets/add_task_button_sheet.dart';
+import 'package:tasky/features/add-task/presentation/widgets/tasks_view_body.dart';
 
 class TasksView extends StatelessWidget {
   const TasksView({super.key});

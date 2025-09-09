@@ -5,10 +5,11 @@ import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
-import 'package:tasky/features/add-task/views/tasks_view.dart';
-import 'package:tasky/features/auth/views/register_view.dart';
-import 'package:tasky/features/auth/widgets/custom_check_auth.dart';
-import 'package:tasky/features/auth/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/add-task/presentation/views/tasks_view.dart';
+import 'package:tasky/features/auth/data/firebase/auth_firebase_operation.dart';
+import 'package:tasky/features/auth/presentation/views/register_view.dart';
+import 'package:tasky/features/auth/presentation/widgets/custom_check_auth.dart';
+import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -69,10 +70,7 @@ class LoginViewBody extends StatelessWidget {
                 onTap: () async {
                   if (formKey.currentState!.validate()) {
                     try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: email.text,
-                        password: password.text,
-                      );
+                      AuthFirebaseOperation.login(email.text, password.text);
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(

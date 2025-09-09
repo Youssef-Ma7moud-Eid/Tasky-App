@@ -16,7 +16,7 @@ class CustomCheckAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text.rich(
       TextSpan(
-        text: '$title    ', // default style
+        text: '$title    ', 
         style: AppStyles.latoRegular14.copyWith(color: AppColors.titleColor),
         children: [
           TextSpan(

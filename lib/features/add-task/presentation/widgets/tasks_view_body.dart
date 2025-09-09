@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
-import 'package:tasky/features/add-task/widgets/custom_drop_down.dart';
-import 'package:tasky/features/auth/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/add-task/presentation/widgets/custom_drop_down.dart';
+import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
 import 'package:tasky/features/edit-task/views/edit_task_view.dart';
 
 class TaskViewBody extends StatelessWidget {
