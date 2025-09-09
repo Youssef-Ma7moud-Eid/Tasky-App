@@ -70,7 +70,10 @@ class LoginViewBody extends StatelessWidget {
                 onTap: () async {
                   if (formKey.currentState!.validate()) {
                     try {
-                      AuthFirebaseOperation.login(email.text, password.text);
+                      await AuthFirebaseOperation.login(
+                        email.text,
+                        password.text,
+                      );
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(

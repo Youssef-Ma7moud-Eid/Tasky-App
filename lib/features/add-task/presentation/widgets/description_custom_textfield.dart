@@ -6,18 +6,18 @@ import 'package:tasky/core/utils/assets.dart';
 class DescriptionCustomTextField extends StatelessWidget {
   const DescriptionCustomTextField({
     super.key,
-    this.onChanged,
     required this.priorityValueNotifier,
     required this.dayValueNotifier,
+    this.controller,
   });
   final ValueNotifier<int> priorityValueNotifier;
   final ValueNotifier<DateTime> dayValueNotifier;
-  final void Function(String)? onChanged;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: onChanged,
+      controller: controller,
       maxLines: 2,
       minLines: 1,
       decoration: InputDecoration(
