@@ -1,96 +1,137 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({
-    super.key,
-    required this.task,
-  });
+  const TaskItem({super.key, required this.task});
 
   final TaskModel task;
+
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) return "No date";
+    return DateFormat("d MMM, h:mm a").format(dateTime);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.subTitleColor, width: 1.5),
-        borderRadius: BorderRadius.circular(15),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(3),
+            width: 28,
+            height: 28,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.titleColor, width: 2),
               shape: BoxShape.circle,
-              color: AppColors.scaffoldColor,
-            ),
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
+              border: Border.all(
                 color: task.isCompleted
                     ? AppColors.primaryColor
-                    : AppColors.scaffoldColor,
+                    : AppColors.subTitleColor,
+                width: 2,
               ),
+              color: task.isCompleted
+                  ? AppColors.primaryColor
+                  : Colors.transparent,
             ),
+            child: task.isCompleted
+                ? const Icon(Icons.check, size: 18, color: Colors.white)
+                : null,
           ),
-          const SizedBox(width: 20),
-    
+          const SizedBox(width: 16),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  task.title ?? '',
-                  style: AppStyles.latoRegular20.copyWith(
-                    color: AppColors.titleColor,
+                  task.title ?? "Untitled Task",
+                  style: AppStyles.latoBold20.copyWith(
+                    color: task.isCompleted
+                        ? Colors.grey
+                        : AppColors.titleColor,
+                    decoration: task.isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
                   ),
-                  overflow: TextOverflow.ellipsis,
                   maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 10),
+
+                if (task.description != null && task.description!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      task.description!,
+                      style: AppStyles.latoRegular14.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                const SizedBox(height: 12),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Text(
-                        task.description ?? '',
-                        style: AppStyles.latoRegular18.copyWith(
-                          color: AppColors.subTitleColor,
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.access_time,
+                          size: 18,
+                          color: Colors.grey,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                        const SizedBox(width: 6),
+                        Text(
+                          _formatDateTime(task.dateTime),
+                          style: AppStyles.latoRegular14.copyWith(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ],
                     ),
+
                     Container(
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.primaryColor,
-                          width: 1.2,
-                        ),
-                        borderRadius: BorderRadius.circular(5),
-                        color: AppColors.scaffoldColor,
+                        color: _getPriorityColor(task.priority),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(
                             Assets.iconsPriorityIcon,
-                            height: 18,
+                            height: 16,
+                            color: Colors.black,
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            task.priority?.toString() ?? '',
-                            style: AppStyles.latoRegular18.copyWith(
-                              color: AppColors.titleColor,
+                            "P${task.priority ?? 1}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
                             ),
                           ),
                         ],
@@ -104,5 +145,18 @@ class TaskItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Color _getPriorityColor(int? priority) {
+    switch (priority) {
+      case 1:
+        return Colors.green;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.red;
+      default:
+        return AppColors.primaryColor;
+    }
   }
 }

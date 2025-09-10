@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
+import 'package:tasky/core/widgets/show_date_dialog.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/show_dialog_ontap.dart';
 import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
@@ -9,9 +10,9 @@ import 'package:tasky/features/edit-task/widgets/info_type.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/core/widgets/show_confirm_dialog.dart';
-import 'package:tasky/core/widgets/show_date_dialog.dart';
 import 'package:tasky/core/widgets/show_priority_dialog.dart';
 import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
+
 class EditTaskViewBody extends StatefulWidget {
   const EditTaskViewBody({super.key, required this.taskModel});
   final TaskModel taskModel;
@@ -210,7 +211,7 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
             InfoType(
               isDate: true,
               onTap: () async {
-                await pickDate(context, dayNotifier);
+                await pickDateTime(context, dayNotifier);
               },
               icon: Assets.iconsTimerIcon,
               type: 'Task Time :',

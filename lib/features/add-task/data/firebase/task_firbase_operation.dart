@@ -91,7 +91,7 @@ class TaskFirebaseOperation {
       if (filter == "Today") {
         final today = DateTime.now();
         filtered = filtered.where((task) {
-          final taskDate =  DateTime.now();
+          final taskDate = DateTime.now();
           return taskDate.year == today.year &&
               taskDate.month == today.month &&
               taskDate.day == today.day;

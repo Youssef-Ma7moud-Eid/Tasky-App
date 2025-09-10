@@ -26,6 +26,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
             Row(
@@ -33,7 +34,9 @@ class _TaskViewBodyState extends State<TaskViewBody> {
               children: [
                 Image.asset(Assets.imagesLogo, height: 40, fit: BoxFit.fill),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    
+                  },
                   child: Image.asset(
                     Assets.iconsLogoutIcon,
                     height: 28,
@@ -55,7 +58,38 @@ class _TaskViewBodyState extends State<TaskViewBody> {
               borderRadius: BorderRadius.circular(12),
             ),
             const SizedBox(height: 20),
-
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.subTitleColor, width: 1.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  value: selectedValue,
+                  isDense: true,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.primaryColor,
+                  ),
+                  style: AppStyles.latoRegular16.copyWith(
+                    color: AppColors.titleColor,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedValue = newValue!;
+                    });
+                  },
+                  items: options.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
             Expanded(
               child: StreamBuilder<List<TaskModel>>(
                 stream: TaskFirebaseOperation.searchTasks(
@@ -73,44 +107,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.subTitleColor,
-                              width: 1.5,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              alignment: Alignment.center,
-                              value: selectedValue,
-                              isDense: true,
-                              icon: const Icon(
-                                Icons.arrow_drop_down,
-                                color: AppColors.primaryColor,
-                              ),
-                              style: AppStyles.latoRegular16.copyWith(
-                                color: AppColors.titleColor,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedValue = newValue!;
-                                });
-                              },
-                              items: options.map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
+
                         const SizedBox(height: 20),
 
                         Expanded(child: TasksLoadedBody(tasks: tasks)),

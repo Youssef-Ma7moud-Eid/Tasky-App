@@ -14,20 +14,21 @@ class TaskDetailInfo extends StatefulWidget {
   final ValueNotifier<DateTime> dayNotifier;
   final ValueNotifier<int> priorityNotifier;
   final void Function()? onTap;
+
   @override
   State<TaskDetailInfo> createState() => _TaskDetailInfoState();
 }
 
 class _TaskDetailInfoState extends State<TaskDetailInfo> {
+ 
+
   @override
   Widget build(BuildContext context) {
     return Row(
       spacing: 15,
       children: [
         GestureDetector(
-          onTap: () async {
-            pickDate(context, widget.dayNotifier);
-          },
+          onTap: () async => await pickDateTime(context,widget.dayNotifier),
           child: Image.asset(Assets.iconsTimerIcon),
         ),
         GestureDetector(
@@ -41,7 +42,7 @@ class _TaskDetailInfoState extends State<TaskDetailInfo> {
           },
           child: Image.asset(Assets.iconsPriorityIcon),
         ),
-        Spacer(),
+        const Spacer(),
         GestureDetector(
           onTap: widget.onTap,
           child: Image.asset(Assets.iconsSendIcon),
