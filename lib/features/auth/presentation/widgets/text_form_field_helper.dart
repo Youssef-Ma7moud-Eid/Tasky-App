@@ -84,10 +84,7 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
       },
       controller: widget.controller,
       validator: widget.onValidate,
-      onChanged: (text) {
-        widget.onChanged?.call(text);
-        _updateTextDirection(text);
-      },
+      onChanged: widget.onChanged,
       onEditingComplete: widget.onEditingComplete,
       onFieldSubmitted: widget.onFieldSubmitted,
       onSaved: widget.onSaved,
@@ -137,7 +134,7 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
           horizontal: 13,
           vertical: 15,
         ),
-      //  border: outlineInputBorder(color: AppColors.subTitleColor, width: 1),
+        //  border: outlineInputBorder(color: AppColors.subTitleColor, width: 1),
         enabledBorder: outlineInputBorder(color: Colors.grey, width: 1),
         focusedBorder: outlineInputBorder(color: Colors.grey, width: 1),
         errorBorder: outlineInputBorder(color: Colors.red, width: 1),

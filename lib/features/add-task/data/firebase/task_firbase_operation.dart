@@ -22,9 +22,11 @@ class TaskFirebaseOperation {
     await docRef.set(task);
   }
 
-  static Future<List<TaskModel>> getAllTasks() async {
-    final querySnapshot = await taskRef.get();
-    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  static Stream<List<TaskModel>> getAllTasks() {
+    return taskRef
+        .orderBy('dateTime', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   static Future<void> updateTask(String taskId, TaskModel task) async {
@@ -33,5 +35,23 @@ class TaskFirebaseOperation {
 
   static Future<void> deleteTask(String taskId) async {
     await taskRef.doc(taskId).delete();
+  }
+
+  static Stream<List<TaskModel>> searchTasks(String query) {
+    final lowercaseQuery = query.toLowerCase();
+    if (query.trim().isEmpty) {
+      return getAllTasks();
+    }
+
+    return taskRef.orderBy('dateTime', descending: true).snapshots().map((
+      snapshot,
+    ) {
+      return snapshot.docs.map((doc) => doc.data()).where((task) {
+        final title = task.title?.toLowerCase() ?? '';
+        final description = task.description?.toLowerCase() ?? '';
+        return title.contains(lowercaseQuery) ||
+            description.contains(lowercaseQuery);
+      }).toList();
+    });
   }
 }

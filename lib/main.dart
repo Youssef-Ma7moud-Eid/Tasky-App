@@ -4,6 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/bloc_observer/bloc_observer.dart';
 import 'package:tasky/core/utils/app_colors.dart';
+import 'package:tasky/features/add-task/presentation/views/tasks_view.dart';
 import 'package:tasky/features/onboarding/views/onboarding_view.dart';
 import 'package:tasky/firebase_options.dart';
 
@@ -22,7 +23,7 @@ class TaskyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const CustomSplashScreen(),
+      home: const TasksView(),
     );
   }
 }

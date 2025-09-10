@@ -13,21 +13,7 @@ class EmptyTasksViewBody extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(Assets.imagesLogo, height: 40, fit: BoxFit.fill),
-                GestureDetector(
-                  onTap: () {},
-                  child: Image.asset(
-                    Assets.iconsLogoutIcon,
-                    height: 28,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
+           SizedBox(height: 50),
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.37,
               width: MediaQuery.sizeOf(context).width * 0.98,
