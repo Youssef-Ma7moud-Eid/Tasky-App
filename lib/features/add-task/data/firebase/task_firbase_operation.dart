@@ -24,7 +24,7 @@ class TaskFirebaseOperation {
 
   static Stream<List<TaskModel>> getAllTasks() {
     return taskRef
-        .orderBy('dateTime', descending: true)
+        .orderBy('dateTime', descending: false)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
@@ -48,7 +48,7 @@ class TaskFirebaseOperation {
           isGreaterThanOrEqualTo: startOfDay.millisecondsSinceEpoch,
         )
         .where('dateTime', isLessThan: endOfDay.millisecondsSinceEpoch)
-        .orderBy('dateTime', descending: true)
+        .orderBy('dateTime', descending: false)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
@@ -62,51 +62,48 @@ class TaskFirebaseOperation {
   }
 
   static Stream<List<TaskModel>> searchTasks(String query, String filter) {
-    final lowercaseQuery = query.toLowerCase();
-    if (query.trim().isEmpty) {
-      if (filter == "All") {
-        return getAllTasks();
-      } else if (filter == "Today") {
-        return getTodayTasks();
-      } else {
-        return getTomorrowTasks();
-      }
+    final lowercaseQuery = query.toLowerCase().trim();
+
+    Query<TaskModel> queryRef = taskRef.orderBy('dateTime', descending: false);
+
+    if (filter == "Today") {
+      final today = DateTime.now();
+      final startOfDay = DateTime(today.year, today.month, today.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
+      queryRef = queryRef
+          .where(
+            'dateTime',
+            isGreaterThanOrEqualTo: startOfDay.millisecondsSinceEpoch,
+          )
+          .where('dateTime', isLessThan: endOfDay.millisecondsSinceEpoch);
+    } else if (filter == "Tomorrow") {
+      final tomorrow = DateTime.now().add(const Duration(days: 1));
+      final startOfDay = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
+      final endOfDay = startOfDay.add(const Duration(days: 1));
+
+      queryRef = queryRef
+          .where(
+            'dateTime',
+            isGreaterThanOrEqualTo: startOfDay.millisecondsSinceEpoch,
+          )
+          .where('dateTime', isLessThan: endOfDay.millisecondsSinceEpoch);
     }
 
-    return taskRef.orderBy('dateTime', descending: true).snapshots().map((
-      snapshot,
-    ) {
-      // Convert all docs to TaskModel
-      final tasks = snapshot.docs.map((doc) => doc.data()).toList();
+    if (lowercaseQuery.isEmpty) {
+      return queryRef.snapshots().map(
+        (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+      );
+    }
 
-      // 🔹 Apply search filter
-      var filtered = tasks.where((task) {
+    return queryRef.snapshots().map((snapshot) {
+      final tasks = snapshot.docs.map((doc) => doc.data()).toList();
+      return tasks.where((task) {
         final title = task.title?.toLowerCase() ?? '';
         final description = task.description?.toLowerCase() ?? '';
-        return query.trim().isEmpty ||
-            title.contains(lowercaseQuery) ||
+        return title.contains(lowercaseQuery) ||
             description.contains(lowercaseQuery);
       }).toList();
-
-      if (filter == "Today") {
-        final today = DateTime.now();
-        filtered = filtered.where((task) {
-          final taskDate = DateTime.now();
-          return taskDate.year == today.year &&
-              taskDate.month == today.month &&
-              taskDate.day == today.day;
-        }).toList();
-      } else if (filter == "Tomorrow") {
-        final tomorrow = DateTime.now().add(const Duration(days: 1));
-        filtered = filtered.where((task) {
-          final taskDate = task.dateTime ?? DateTime.now();
-          return taskDate.year == tomorrow.year &&
-              taskDate.month == tomorrow.month &&
-              taskDate.day == tomorrow.day;
-        }).toList();
-      }
-
-      return filtered;
     });
   }
 }
