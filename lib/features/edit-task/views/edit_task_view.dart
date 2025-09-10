@@ -1,18 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
-import 'package:tasky/core/widgets/custom_button.dart';
 import 'package:tasky/core/widgets/show_date_dialog.dart';
 import 'package:tasky/core/widgets/show_priority_dialog.dart';
 import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/show_dialog_ontap.dart';
 import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/edit-task/widgets/delete_task_section.dart';
+import 'package:tasky/features/edit-task/widgets/edit_task_button_section.dart';
+import 'package:tasky/features/edit-task/widgets/info_type.dart';
 
 class EditTaskView extends StatelessWidget {
   const EditTaskView({super.key, required this.taskModel});
@@ -41,7 +39,6 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
   late TextEditingController title;
   late TextEditingController subTitle;
   late GlobalKey<FormState> formkey;
-  bool titleOrSubtitleChange = false;
   @override
   void initState() {
     formkey = GlobalKey();
@@ -121,7 +118,7 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                     spacing: 10,
                     children: [
                       Text(
-                        widget.taskModel.title ?? '',
+                        title.text,
                         style: AppStyles.latoBold20.copyWith(
                           color: AppColors.titleColor,
                         ),
@@ -129,7 +126,7 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '${widget.taskModel.description}                                 ',
+                        '${subTitle.text}                                 ',
                         style: AppStyles.latoRegular18.copyWith(
                           color: AppColors.subTitleColor,
                         ),
@@ -193,20 +190,15 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                                     ShowDialogOnTap(
                                       onTap: () async {
                                         if (formkey.currentState!.validate()) {
-                                          if (widget.taskModel.title !=
-                                              title.text) {
-                                            widget.taskModel.title = title.text;
-                                            titleOrSubtitleChange = true;
-                                          }
-                                          if (widget.taskModel.description !=
-                                              subTitle.text) {
-                                            titleOrSubtitleChange = true;
-                                            widget.taskModel.description =
-                                                subTitle.text;
-                                          }
-
+                                          setState(() {});
                                           Navigator.pop(context);
                                         }
+                                      },
+                                      onTap2: () {
+                                        title.text = widget.taskModel.title!;
+                                        subTitle.text =
+                                            widget.taskModel.description!;
+                                        Navigator.pop(context);
                                       },
                                     ),
                                   ],
@@ -257,108 +249,19 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                 await TaskFirebaseOperation.deleteTask(widget.taskModel.id!);
                 Navigator.pop(context);
               },
-              child: Row(
-                spacing: 20,
-                children: [
-                  Image.asset(
-                    Assets.iconsDeleteIcon,
-                    height: 30,
-                    fit: BoxFit.fill,
-                  ),
-                  Text(
-                    'Delete Task',
-                    style: AppStyles.latoRegular20.copyWith(
-                      color: Color(0xffFF4949),
-                    ),
-                  ),
-                ],
-              ),
+              child: DeleteTaskSection(),
             ),
             Expanded(child: SizedBox()),
-            GestureDetector(
-              onTap: () async {
-                bool isChange = false;
-                if (widget.taskModel.isCompleted != isCompleted) {
-                  isChange = true;
-                }
-                if (widget.taskModel.dateTime != dayNotifier.value) {
-                  isChange = true;
-                }
-                if (widget.taskModel.priority != priorityNotifier.value) {
-                  isChange = true;
-                }
-                if (isChange || titleOrSubtitleChange) {
-                  widget.taskModel.isCompleted = isCompleted;
-                  widget.taskModel.dateTime = dayNotifier.value;
-                  widget.taskModel.priority = priorityNotifier.value;
-                  log('changeeeeeeeeeeeeeeeeeeeeeee');
-                  await TaskFirebaseOperation.updateTask(
-                    widget.taskModel.id!,
-                    widget.taskModel,
-                  );
-                }
-                Navigator.pop(context);
-              },
-              child: CustomButton(
-                title: 'Edit Task',
-                style: AppStyles.latoBold20.copyWith(
-                  color: AppColors.scaffoldColor,
-                ),
-              ),
+            EditTaskButtonSection(
+              widget: widget,
+              isCompleted: isCompleted,
+              dayNotifier: dayNotifier,
+              priorityNotifier: priorityNotifier,
+              title: title,
+              subTitle: subTitle,
             ),
             SizedBox(height: 30),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class InfoType extends StatelessWidget {
-  const InfoType({
-    super.key,
-    required this.notifier,
-    required this.type,
-    required this.icon,
-    this.onTap,
-    required this.isDate,
-  });
-
-  final ValueNotifier<dynamic> notifier;
-  final String type;
-  final String icon;
-  final bool isDate;
-  final void Function()? onTap;
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsetsGeometry.zero,
-      leading: Image.asset(icon),
-      title: Text(
-        type,
-        style: AppStyles.latoBold20.copyWith(color: AppColors.titleColor),
-      ),
-      trailing: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.sizeOf(context).width * 0.2,
-
-          decoration: BoxDecoration(
-            color: Color(0xffE0DFE3),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ValueListenableBuilder(
-            valueListenable: notifier,
-            builder: (context, value, child) {
-              return Text(
-                isDate ? '${value.day}/${value.month}' : value.toString(),
-                style: AppStyles.latoRegular18.copyWith(
-                  color: AppColors.titleColor,
-                ),
-              );
-            },
-          ),
         ),
       ),
     );

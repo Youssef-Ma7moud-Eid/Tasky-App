@@ -6,12 +6,14 @@ import 'package:tasky/core/widgets/custom_button.dart';
 class ShowDialogOnTap extends StatelessWidget {
   const ShowDialogOnTap({
     super.key,
-     this.selectedPriority,
+    this.selectedPriority,
     this.onTap,
+    this.onTap2,
   });
 
-  final int ?selectedPriority;
+  final int? selectedPriority;
   final void Function()? onTap;
+  final void Function()? onTap2;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,9 +21,11 @@ class ShowDialogOnTap extends StatelessWidget {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap:
+                onTap2 ??
+                () {
+                  Navigator.pop(context);
+                },
             child: CustomButton(
               borderRadius: BorderRadius.circular(4),
               title: "Cancel",
