@@ -118,10 +118,17 @@ class TaskViewBody extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   spacing: 10,
                                   children: [
-                                    Text(
-                                      tasks[index].title ?? '',
-                                      style: AppStyles.latoRegular20.copyWith(
-                                        color: AppColors.titleColor,
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.sizeOf(context).width *
+                                          0.7,
+                                      child: Text(
+                                        tasks[index].title ?? '',
+                                        style: AppStyles.latoRegular20.copyWith(
+                                          color: AppColors.titleColor,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
                                       ),
                                     ),
                                     Row(

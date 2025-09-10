@@ -6,11 +6,11 @@ import 'package:tasky/core/widgets/custom_button.dart';
 class ShowDialogOnTap extends StatelessWidget {
   const ShowDialogOnTap({
     super.key,
-    required this.selectedPriority,
+     this.selectedPriority,
     this.onTap,
   });
 
-  final int selectedPriority;
+  final int ?selectedPriority;
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {

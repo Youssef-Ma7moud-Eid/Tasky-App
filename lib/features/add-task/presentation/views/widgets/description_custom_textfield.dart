@@ -19,7 +19,7 @@ class DescriptionCustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       maxLines: 2,
-      minLines: 1,
+      maxLength: 150,
       decoration: InputDecoration(
         suffixIcon: Row(
           spacing: 10,

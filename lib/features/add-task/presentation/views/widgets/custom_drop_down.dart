@@ -11,7 +11,7 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   String selectedValue = "Today";
-  final List<String> options = ["Today", "Tomorrow", "Next Week"];
+  final List<String> options = ["Today", "Tomorrow", ];
 
   @override
   Widget build(BuildContext context) {
