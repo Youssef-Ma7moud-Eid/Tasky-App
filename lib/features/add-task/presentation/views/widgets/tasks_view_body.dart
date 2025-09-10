@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/utils/app_colors.dart';
+import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
-import 'package:tasky/features/add-task/presentation/views/widgets/custom_drop_down.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/empty_tasks_view_body.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/task_shimmer_loading.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/tasks_loaded_body.dart';
@@ -17,7 +18,8 @@ class TaskViewBody extends StatefulWidget {
 
 class _TaskViewBodyState extends State<TaskViewBody> {
   String queryData = '';
-
+  String selectedValue = "Today";
+  final List<String> options = ["All", "Today", "Tomorrow"];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,10 +56,12 @@ class _TaskViewBodyState extends State<TaskViewBody> {
             ),
             const SizedBox(height: 20),
 
-            /// 🔥 StreamBuilder should take remaining space
             Expanded(
               child: StreamBuilder<List<TaskModel>>(
-                stream: TaskFirebaseOperation.searchTasks(queryData),
+                stream: TaskFirebaseOperation.searchTasks(
+                  queryData,
+                  selectedValue,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const TaskShimmerLoading();
@@ -69,10 +73,46 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
-                        const CustomDropdown(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.subTitleColor,
+                              width: 1.5,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              alignment: Alignment.center,
+                              value: selectedValue,
+                              isDense: true,
+                              icon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: AppColors.primaryColor,
+                              ),
+                              style: AppStyles.latoRegular16.copyWith(
+                                color: AppColors.titleColor,
+                              ),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedValue = newValue!;
+                                });
+                              },
+                              items: options.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 20),
 
-                        /// 👇 ListView must be wrapped in Expanded inside Column
                         Expanded(child: TasksLoadedBody(tasks: tasks)),
                       ],
                     );

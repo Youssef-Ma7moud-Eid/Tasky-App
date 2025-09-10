@@ -1,163 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/core/utils/app_colors.dart';
-import 'package:tasky/core/utils/app_styles.dart';
-import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
+import 'package:tasky/features/add-task/presentation/views/widgets/task_item.dart';
 import 'package:tasky/features/edit-task/views/edit_task_view.dart';
 
 class TasksLoadedBody extends StatelessWidget {
-  const TasksLoadedBody({
-    super.key,
-    required this.tasks,
-  });
+  const TasksLoadedBody({super.key, required this.tasks});
 
   final List<TaskModel> tasks;
 
   @override
   Widget build(BuildContext context) {
+    final completedTasks = tasks.where((t) => t.isCompleted == true).toList();
+    final uncompletedTasks =
+        tasks.where((t) => t.isCompleted == false).toList();
+
+    final combinedList = [
+       {"type": "header", "title": "Uncompleted"},
+      ...uncompletedTasks.map((t) => {"type": "task", "task": t}),
+      {"type": "header", "title": "Completed"},
+      ...completedTasks.map((t) => {"type": "task", "task": t}),
+     
+    ];
+
     return ListView.builder(
-      itemCount: tasks.length,
+      itemCount: combinedList.length,
       itemBuilder: (context, index) {
-        final task = tasks[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    EditTaskView(taskModel: task),
+        final item = combinedList[index];
+
+        if (item["type"] == "header") {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            child: Text(
+              item["title"] as String,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              vertical: 15,
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 5,
-              vertical: 10,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.subTitleColor,
-                width: 1.5,
-              ),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                /// ✅ Completion circle
-                Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.titleColor,
-                      width: 2,
-                    ),
-                    shape: BoxShape.circle,
-                    color: AppColors.scaffoldColor,
-                  ),
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: task.isCompleted
-                          ? AppColors.primaryColor
-                          : AppColors.scaffoldColor,
-                    ),
-                  ),
+          );
+        } else {
+          final task = item["task"] as TaskModel;
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => EditTaskView(taskModel: task),
                 ),
-                const SizedBox(width: 20),
-    
-               
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        task.title ?? '',
-                        style: AppStyles.latoRegular20
-                            .copyWith(
-                              color: AppColors.titleColor,
-                            ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              task.description ?? '',
-                              style: AppStyles
-                                  .latoRegular18
-                                  .copyWith(
-                                    color: AppColors
-                                        .subTitleColor,
-                                  ),
-                              overflow:
-                                  TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(
-                              4,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors
-                                    .primaryColor,
-                                width: 1.2,
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(
-                                    5,
-                                  ),
-                              color:
-                                  AppColors.scaffoldColor,
-                            ),
-                            child: Row(
-                              mainAxisSize:
-                                  MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  Assets
-                                      .iconsPriorityIcon,
-                                  height: 18,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  task.priority
-                                          ?.toString() ??
-                                      '',
-                                  style: AppStyles
-                                      .latoRegular18
-                                      .copyWith(
-                                        color: AppColors
-                                            .titleColor,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+              );
+            },
+            child: TaskItem(task: task),
+          );
+        }
       },
     );
   }
 }
+
 
