@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
-import 'package:tasky/features/add-task/presentation/widgets/show_dialog_ontap.dart';
+import 'package:tasky/features/add-task/presentation/views/widgets/show_dialog_ontap.dart';
 
 class ShowPriorityDialog extends StatefulWidget {
   const ShowPriorityDialog({super.key, required this.priorityNotifier});

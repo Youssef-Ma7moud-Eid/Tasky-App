@@ -5,8 +5,8 @@ import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
-import 'package:tasky/features/add-task/presentation/widgets/description_custom_textfield.dart';
-import 'package:tasky/features/add-task/presentation/widgets/task_detail_info.dart';
+import 'package:tasky/features/add-task/presentation/views/widgets/description_custom_textfield.dart';
+import 'package:tasky/features/add-task/presentation/views/widgets/task_detail_info.dart';
 import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
 
 class AddTaskButtonSheet extends StatefulWidget {

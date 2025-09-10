@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/functions/snak_bar.dart';
 import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
+import 'package:tasky/features/add-task/presentation/manager/get_tasks_cubit.dart';
 import 'package:tasky/features/add-task/presentation/views/tasks_view.dart';
 import 'package:tasky/features/auth/data/firebase/auth_firebase_operation.dart';
 import 'package:tasky/features/auth/presentation/views/register_view.dart';
@@ -74,6 +76,7 @@ class LoginViewBody extends StatelessWidget {
                         email.text,
                         password.text,
                       );
+                      await BlocProvider.of<GetTasksCubit>(context).getTasks();
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
