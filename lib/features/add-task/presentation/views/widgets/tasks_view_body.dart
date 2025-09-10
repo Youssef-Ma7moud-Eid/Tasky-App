@@ -13,7 +13,6 @@ import 'package:tasky/features/edit-task/views/edit_task_view.dart';
 
 class TaskViewBody extends StatelessWidget {
   const TaskViewBody({super.key});
-  //  final List<TaskModel> tasks;
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +92,25 @@ class TaskViewBody extends StatelessWidget {
                             child: Row(
                               spacing: 20,
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: AppColors.primaryColor,
-                                  radius: 15,
-                                  child: CircleAvatar(
-                                    backgroundColor: AppColors.scaffoldColor,
-                                    radius: 13,
+                                Container(
+                                  padding: EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.titleColor,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: AppColors.scaffoldColor,
+                                  ),
+                                  child: Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: tasks[index].isCompleted
+                                          ? AppColors.primaryColor
+                                          : AppColors.scaffoldColor,
+                                    ),
                                   ),
                                 ),
                                 Column(
@@ -122,7 +134,8 @@ class TaskViewBody extends StatelessWidget {
                                               MediaQuery.sizeOf(context).width *
                                               0.6,
                                           child: Text(
-                                            '${tasks[index].description}' ?? '',
+                                            '${tasks[index].description}',
+
                                             style: AppStyles.latoRegular18
                                                 .copyWith(
                                                   color:
@@ -153,7 +166,8 @@ class TaskViewBody extends StatelessWidget {
                                                 Assets.iconsPriorityIcon,
                                               ),
                                               Text(
-                                               tasks[index].priority!.toString(),
+                                                tasks[index].priority!
+                                                    .toString(),
                                                 style: AppStyles.latoRegular18
                                                     .copyWith(
                                                       color:

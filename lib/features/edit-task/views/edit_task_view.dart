@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:tasky/core/utils/app_colors.dart';
@@ -101,26 +99,29 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                   ),
                 ),
                 SizedBox(width: 2),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 10,
-                  children: [
-                    Text(
-                      widget.taskModel.title ?? '',
-                      style: AppStyles.latoBold20.copyWith(
-                        color: AppColors.titleColor,
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width*0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 10,
+                    children: [
+                      Text(
+                        widget.taskModel.title ?? '',
+                        style: AppStyles.latoBold20.copyWith(
+                          color: AppColors.titleColor,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '${widget.taskModel.description}                                 ',
-                      style: AppStyles.latoRegular18.copyWith(
-                        color: AppColors.subTitleColor,
+                      Text(
+                        '${widget.taskModel.description}                                 ',
+                        style: AppStyles.latoRegular18.copyWith(
+                          color: AppColors.subTitleColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Expanded(child: SizedBox()),
                 GestureDetector(
                   onTap: () {},
                   child: Image.asset(
@@ -182,15 +183,9 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
             Expanded(child: SizedBox()),
             GestureDetector(
               onTap: () async {
-                log(widget.taskModel.title!);
-                log(widget.taskModel.description!);
-                log(widget.taskModel.isCompleted.toString());
-                log(widget.taskModel.dateTime!.toString());
-                log(widget.taskModel.priority!.toString());
-                log('--------------------------------------');
-                log(dayNotifier.value.toString());
-                log(priorityNotifier.value.toString());
-                log(isCompleted.toString());
+                widget.taskModel.isCompleted = isCompleted;
+                widget.taskModel.dateTime = dayNotifier.value;
+                widget.taskModel.priority = priorityNotifier.value;
                 await TaskFirebaseOperation.updateTask(
                   widget.taskModel.id!,
                   widget.taskModel,

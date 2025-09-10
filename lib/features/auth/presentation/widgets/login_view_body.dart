@@ -76,7 +76,7 @@ class LoginViewBody extends StatelessWidget {
                         email.text,
                         password.text,
                       );
-                      await BlocProvider.of<GetTasksCubit>(context).getTasks();
+                   
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(

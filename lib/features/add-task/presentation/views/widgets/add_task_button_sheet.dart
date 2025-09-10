@@ -42,6 +42,10 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
+        title.clear();
+        subTitle.clear();
+        _dayNotifier.value = DateTime.now();
+        _priorityNotifier.value = 1;
         showModalBottomSheet(
           sheetAnimationStyle: AnimationStyle(
             duration: Duration(milliseconds: 700),
@@ -92,7 +96,6 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
 
                           SizedBox(height: 10),
                           DescriptionCustomTextField(
-                            
                             controller: subTitle,
                             dayValueNotifier: _dayNotifier,
                             priorityValueNotifier: _priorityNotifier,
