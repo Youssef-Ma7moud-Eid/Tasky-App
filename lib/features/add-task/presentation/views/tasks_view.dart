@@ -9,7 +9,7 @@ class TasksView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // ⬅️ مهم
+      resizeToAvoidBottomInset: true,
 
       backgroundColor: AppColors.scaffoldColor,
       body: TaskViewBody(),

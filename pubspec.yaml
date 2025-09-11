@@ -38,6 +38,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   intl: ^0.20.2
   shared_preferences: ^2.5.3
@@ -108,3 +109,8 @@ flutter_assets:
   field_prefix: null
   ignore_comments: true
   classname: Assets
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app-icon.png"
