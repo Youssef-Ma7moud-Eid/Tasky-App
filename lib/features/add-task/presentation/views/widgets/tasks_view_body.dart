@@ -28,134 +28,152 @@ class _TaskViewBodyState extends State<TaskViewBody> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(Assets.imagesLogo, height: 40, fit: BoxFit.fill),
-                GestureDetector(
-                  onTap: () async {
-                    await AuthCubit.get(context).logout();
-                  },
-                  child: BlocConsumer<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                      if (state is LogoutFauilreState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      } else if (state is LogoutSuccessState) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (_) => const LoginView()),
-                          (route) => false,
-                        );
-                      }
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          // 👈 يخلي الصفحة كلها تتحرك مع الكيبورد
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+
+              /// App Bar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(Assets.imagesLogo, height: 40, fit: BoxFit.fill),
+                  GestureDetector(
+                    onTap: () async {
+                      await AuthCubit.get(context).logout();
                     },
-                    builder: (context, state) {
-                      if (state is LogoutLoadingState) {
-                        return const SizedBox(
-                          height: 28,
-                          width: 28,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.red,
+                    child: BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is LogoutFauilreState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                              backgroundColor: Colors.red,
                             ),
-                          ),
+                          );
+                        } else if (state is LogoutSuccessState) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LoginView(),
+                            ),
+                            (route) => false,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is LogoutLoadingState) {
+                          return const SizedBox(
+                            height: 28,
+                            width: 28,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.red,
+                              ),
+                            ),
+                          );
+                        }
+                        return Image.asset(
+                          Assets.iconsLogoutIcon,
+                          height: 28,
+                          fit: BoxFit.fill,
                         );
-                      }
-                      return Image.asset(
-                        Assets.iconsLogoutIcon,
-                        height: 28,
-                        fit: BoxFit.fill,
-                      );
-                    },
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            TextFormFieldHelper(
-              onChanged: (query) {
-                setState(() {
-                  queryData = query ?? '';
-                });
-              },
-              hint: 'Search for your task...',
-              prefixIcon: Image.asset(Assets.iconsSearchIcon),
-              isMobile: true,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.subTitleColor, width: 1.5),
-                borderRadius: BorderRadius.circular(8),
+                ],
               ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  alignment: Alignment.center,
-                  value: selectedValue,
-                  isDense: true,
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: AppColors.primaryColor,
-                  ),
-                  style: AppStyles.latoRegular16.copyWith(
-                    color: AppColors.titleColor,
-                  ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
-                  },
-                  items: options.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            Expanded(
-              child: StreamBuilder<List<TaskModel>>(
-                stream: TaskFirebaseOperation.searchTasks(
-                  queryData,
-                  selectedValue,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const TaskShimmerLoading();
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text('Something went wrong'));
-                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    final tasks = snapshot.data!;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
 
-                        const SizedBox(height: 20),
+              const SizedBox(height: 15),
 
-                        Expanded(child: TasksLoadedBody(tasks: tasks)),
-                      ],
-                    );
-                  } else {
-                    return const EmptyTasksViewBody();
-                  }
+              /// Search field
+              TextFormFieldHelper(
+                onChanged: (query) {
+                  setState(() {
+                    queryData = query ?? '';
+                  });
                 },
+                hint: 'Search for your task...',
+                prefixIcon: Image.asset(Assets.iconsSearchIcon),
+                isMobile: true,
+                borderRadius: BorderRadius.circular(12),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 20),
+
+              /// Dropdown
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors.subTitleColor,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    alignment: Alignment.center,
+                    value: selectedValue,
+                    isDense: true,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.primaryColor,
+                    ),
+                    style: AppStyles.latoRegular16.copyWith(
+                      color: AppColors.titleColor,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                      });
+                    },
+                    items: options.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              /// Tasks Section
+              SizedBox(
+                height:
+                    MediaQuery.of(context).size.height *
+                    0.65, // 👈 عشان مايكبرش زيادة
+                child: StreamBuilder<List<TaskModel>>(
+                  stream: TaskFirebaseOperation.searchTasks(
+                    queryData,
+                    selectedValue,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const TaskShimmerLoading();
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Something went wrong'));
+                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      final tasks = snapshot.data!;
+                      return TasksLoadedBody(tasks: tasks);
+                    } else {
+                      return const EmptyTasksViewBody();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -60,75 +60,81 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
           ),
           backgroundColor: AppColors.scaffoldColor,
           builder: (context) {
-            return DraggableScrollableSheet(
-              expand: false,
-              initialChildSize: 0.3,
-              minChildSize: 0.3,
-              maxChildSize: 0.9,
-              builder: (context, scrollController) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                    top: 15,
-                    bottom:
-                        MediaQuery.viewInsetsOf(context).bottom +
-                        MediaQuery.sizeOf(context).height * 0.04,
-                  ),
-                  child: Form(
-                    key: formkey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Add Task',
-                          style: AppStyles.latoBold20.copyWith(
-                            color: AppColors.titleColor,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        TextFormFieldHelper(
-                          maxLength: 50,
-                          controller: title,
-                          hint: "Enter task title",
-                          isMobile: true,
-                          onValidate: Validator.validateName,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: DraggableScrollableSheet(
+                expand: false,
+                initialChildSize: 0.3,
+                minChildSize: 0.3,
+                maxChildSize: 0.9,
+                builder: (context, scrollController) {
+                  return SingleChildScrollView(
+                    controller: scrollController,
 
-                        SizedBox(height: 10),
-                        DescriptionCustomTextField(
-                          controller: subTitle,
-                          dayValueNotifier: _dayNotifier,
-                          priorityValueNotifier: _priorityNotifier,
-                        ),
-
-                        SizedBox(height: 25),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: TaskDetailInfo(
-                            onTap: () async {
-                              if (formkey.currentState!.validate()) {
-                                await TaskFirebaseOperation.addTask(
-                                  TaskModel(
-                                    title: title.text,
-                                    dateTime: _dayNotifier.value,
-                                    description: subTitle.text,
-                                    priority: _priorityNotifier.value,
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              }
-                            },
-                            dayNotifier: _dayNotifier,
-                            priorityNotifier: _priorityNotifier,
-                          ),
-                        ),
-                      ],
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 15,
+                      bottom: MediaQuery.of(context).viewInsets.bottom + 20,
                     ),
-                  ),
-                );
-              },
+                    child: Form(
+                      key: formkey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Add Task',
+                            style: AppStyles.latoBold20.copyWith(
+                              color: AppColors.titleColor,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormFieldHelper(
+                            maxLength: 50,
+                            controller: title,
+                            hint: "Enter task title",
+                            isMobile: true,
+                            onValidate: Validator.validateName,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+
+                          SizedBox(height: 10),
+                          DescriptionCustomTextField(
+                            controller: subTitle,
+                            dayValueNotifier: _dayNotifier,
+                            priorityValueNotifier: _priorityNotifier,
+                          ),
+
+                          SizedBox(height: 25),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: TaskDetailInfo(
+                              onTap: () async {
+                                if (formkey.currentState!.validate()) {
+                                  await TaskFirebaseOperation.addTask(
+                                    TaskModel(
+                                      title: title.text,
+                                      dateTime: _dayNotifier.value,
+                                      description: subTitle.text,
+                                      priority: _priorityNotifier.value,
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              dayNotifier: _dayNotifier,
+                              priorityNotifier: _priorityNotifier,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           },
         );

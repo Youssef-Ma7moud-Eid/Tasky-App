@@ -53,8 +53,9 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,7 +72,7 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
             ),
             SizedBox(height: 30),
             Row(
-              spacing: 20,
+              spacing: 15,
               children: [
                 Container(
                   padding: EdgeInsets.all(3),
@@ -249,7 +250,8 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
               },
               child: DeleteTaskSection(),
             ),
-            Expanded(child: SizedBox()),
+            SizedBox(height: MediaQuery.sizeOf(context).height*0.27),
+
             EditTaskButtonSection(
               widget: widget,
               isCompleted: isCompleted,
