@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
@@ -7,7 +8,10 @@ import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/empty_tasks_view_body.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/task_shimmer_loading.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/tasks_loaded_body.dart';
-import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
+import 'package:tasky/features/auth/presentation/manager/auth_state.dart';
+import 'package:tasky/features/auth/presentation/views/login_view.dart';
+import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
 
 class TaskViewBody extends StatefulWidget {
   const TaskViewBody({super.key});
@@ -26,7 +30,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
             Row(
@@ -34,13 +38,45 @@ class _TaskViewBodyState extends State<TaskViewBody> {
               children: [
                 Image.asset(Assets.imagesLogo, height: 40, fit: BoxFit.fill),
                 GestureDetector(
-                  onTap: () {
-                    
+                  onTap: () async {
+                    await AuthCubit.get(context).logout();
                   },
-                  child: Image.asset(
-                    Assets.iconsLogoutIcon,
-                    height: 28,
-                    fit: BoxFit.fill,
+                  child: BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is LogoutFauilreState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } else if (state is LogoutSuccessState) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LoginView()),
+                          (route) => false,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is LogoutLoadingState) {
+                        return const SizedBox(
+                          height: 28,
+                          width: 28,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.red,
+                            ),
+                          ),
+                        );
+                      }
+                      return Image.asset(
+                        Assets.iconsLogoutIcon,
+                        height: 28,
+                        fit: BoxFit.fill,
+                      );
+                    },
                   ),
                 ),
               ],

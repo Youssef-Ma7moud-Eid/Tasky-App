@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
@@ -28,6 +30,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
   }
 
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
       body: Column(
         children: [
           SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.5,
+            height: MediaQuery.sizeOf(context).height * 0.75,
             child: PageView.builder(
               onPageChanged: (value) {
                 setState(() {
@@ -43,20 +46,49 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                 });
               },
               controller: _pageController,
-              itemCount: 3,
+              itemCount: page.length,
               itemBuilder: (context, index) {
                 return Container(
                   color: AppColors.scaffoldColor,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      SizedBox(height: 150),
-                      SizedBox(
-                        height: 300,
+                      const SizedBox(height: 120),
 
-                        child: Image.asset(
-                          page[index]["image"]!,
-                          fit: BoxFit.fill,
+                      ZoomIn(
+                        duration: const Duration(milliseconds: 800),
+                        child: SizedBox(
+                          height: 280,
+                          child: Image.asset(
+                            page[index]["image"]!,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 40),
+
+                      FadeInRight(
+                        duration: const Duration(milliseconds: 800),
+                        child: Text(
+                          page[index]["title"]!,
+                          style: AppStyles.latoBold32.copyWith(
+                            color: AppColors.titleColor,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      FadeInLeft(
+                        duration: const Duration(milliseconds: 800),
+                        child: Text(
+                          page[index]["subTitle"]!,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          style: AppStyles.latoRegular16.copyWith(
+                            color: AppColors.subTitleColor,
+                          ),
                         ),
                       ),
                     ],
@@ -65,10 +97,12 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
               },
             ),
           ),
-          SizedBox(height: 20),
+
+          const SizedBox(height: 20),
+
           SmoothPageIndicator(
             controller: _pageController,
-            count: 3,
+            count: page.length,
             effect: WormEffect(
               activeDotColor: AppColors.primaryColor,
               dotHeight: 6,
@@ -77,29 +111,15 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
               radius: 56,
             ),
           ),
-          SizedBox(height: 70),
-          Text(
-            page[currentIndex]["title"]!,
-            style: AppStyles.latoBold32.copyWith(color: AppColors.titleColor),
-          ),
-          SizedBox(height: 30),
-          Text(
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            page[currentIndex]["subTitle"]!,
-            style: AppStyles.latoRegular16.copyWith(
-              color: AppColors.subTitleColor,
-            ),
-          ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton.extended(
         heroTag: "button",
-
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         backgroundColor: AppColors.primaryColor,
-        onPressed: () {
-          if (currentIndex <= 1) {
+        onPressed: () async {
+          if (currentIndex < page.length - 1) {
             setState(() {
               currentIndex++;
               _pageController.animateToPage(
@@ -109,19 +129,23 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
               );
             });
           } else {
+            await CacheHelper().saveData(key: 'NewUser', value: true);
+
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return LoginView();
+                  return const LoginView();
                 },
               ),
             );
           }
         },
         label: Text(
-          currentIndex <= 1 ? "NEXT" : "GET STARTED",
-          style: AppStyles.latoRegular18.copyWith(color: Color(0xffFFFFFF)),
+          currentIndex < page.length - 1 ? "NEXT" : "GET STARTED",
+          style: AppStyles.latoRegular18.copyWith(
+            color: const Color(0xffFFFFFF),
+          ),
         ),
       ),
     );
@@ -133,18 +157,18 @@ List<Map<String, String>> page = [
     "image": Assets.imagesOnboarding1,
     "title": "Manage your tasks",
     "subTitle":
-        "You can easily manage all of your daily                                 tasks in DoMe for free",
+        "You can easily manage all of your daily tasks in DoMe for free",
   },
   {
     "image": Assets.imagesOnboarding2,
     "title": "Create daily routine",
     "subTitle":
-        "In Tasky  you can create your personalized                        routine to stay productive",
+        "In Tasky you can create your personalized routine to stay productive",
   },
   {
     "image": Assets.imagesOnboarding3,
-    "title": "Orgonaize your tasks",
+    "title": "Organize your tasks",
     "subTitle":
-        "You can organize your daily tasks by                                    adding your tasks into separate categories",
+        "You can organize your daily tasks by adding them into separate categories",
   },
 ];

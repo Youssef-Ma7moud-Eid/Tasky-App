@@ -3,7 +3,7 @@ import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/widgets/show_date_dialog.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/show_dialog_ontap.dart';
-import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
 import 'package:tasky/features/edit-task/widgets/delete_task_section.dart';
 import 'package:tasky/features/edit-task/widgets/edit_task_button_section.dart';
 import 'package:tasky/features/edit-task/widgets/info_type.dart';

@@ -1,14 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tasky/core/functions/snak_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
-import 'package:tasky/features/auth/data/firebase/auth_firebase_operation.dart';
+import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
+import 'package:tasky/features/auth/presentation/manager/auth_state.dart';
 import 'package:tasky/features/auth/presentation/views/login_view.dart';
-import 'package:tasky/features/auth/presentation/widgets/custom_check_auth.dart';
-import 'package:tasky/features/auth/presentation/widgets/text_form_field_helper.dart';
+import 'package:tasky/features/auth/presentation/views/widgets/custom_check_auth.dart';
+import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -116,60 +116,42 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               GestureDetector(
                 onTap: () async {
                   if (formKey.currentState!.validate()) {
-                    if (Validator.validateConfirmPassword(
-                          password.text,
-                          confirmPassword.text,
-                        ) ==
-                        null) {
-                      try {
-                        await AuthFirebaseOperation.signUp(
-                          username: username.text,
-                          email: email.text,
-                          password: password.text,
-                        );
-
-                        Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                                  return LoginView();
-                                },
-                          ),
-                        );
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          scaffoldmessenger(
-                            context: context,
-                            color: AppColors.primaryColor,
-                            text: 'The password provided is too weak.',
-                          );
-                        } else if (e.code == 'email-already-in-use') {
-                          scaffoldmessenger(
-                            context: context,
-                            color: AppColors.primaryColor,
-                            text: 'The account already exists for that email.',
-                          );
-                        }
-                      } catch (e) {
-                        scaffoldmessenger(
-                          context: context,
-                          color: AppColors.primaryColor,
-                          text: e.toString(),
-                        );
-                      }
-                    } else {
-                      scaffoldmessenger(
-                        context: context,
-                        color: AppColors.primaryColor,
-                        text: "Password don't match",
-                      );
-                    }
+                    await AuthCubit.get(
+                      context,
+                    ).checkSignin(email.text, password.text, username.text);
                   }
                 },
-                child: CustomButton(title: "Register"),
+                child: BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is SuccessAuthState) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Success sign Up"),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } else if (state is FailureAuthState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is LoadingAuthState) {
+                      return const CustomButton(
+                        title: "Loading ..",
+                        isLoading: true,
+                      );
+                    }
+                    return const CustomButton(title: "Sign Up");
+                  },
+                ),
               ),
-              SizedBox(height: MediaQuery.sizeOf(context).height * 0.25),
+              SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
               MediaQuery.of(context).viewInsets.bottom == 0
                   ? Center(
                       child: CustomCheckAuth(

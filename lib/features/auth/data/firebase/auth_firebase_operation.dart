@@ -32,4 +32,13 @@ class AuthFirebaseOperation {
       password: password,
     );
   }
+
+  static Future<bool> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
