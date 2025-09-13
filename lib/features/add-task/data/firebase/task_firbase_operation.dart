@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tasky/core/utils/local_notification_services.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 
 class TaskFirebaseOperation {
@@ -18,6 +22,8 @@ class TaskFirebaseOperation {
     DocumentReference<TaskModel> docRef = taskRef.doc();
 
     task.id = docRef.id;
+    final notificationId = generateStableId(task.id!);
+    LoalNotificationServices.showScheduledNotification(notificationId, task);
 
     await docRef.set(task);
   }
@@ -106,4 +112,15 @@ class TaskFirebaseOperation {
       }).toList();
     });
   }
+}
+
+int generateStableId(String docId) {
+  final bytes = utf8.encode(docId);
+  final digest = md5.convert(bytes);
+
+  // Take first 4 bytes → 32-bit int
+  final value = int.parse(digest.toString().substring(0, 8), radix: 16);
+
+  // Force it into signed 32-bit range
+  return value & 0x7FFFFFFF; // max = 2147483647
 }

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/bloc_observer/bloc_observer.dart';
 import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
+import 'package:tasky/core/utils/local_notification_services.dart';
+import 'package:tasky/features/add-task/presentation/views/tasks_view.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
 import 'package:tasky/features/auth/presentation/views/login_view.dart';
 import 'package:tasky/features/onboarding/views/onboarding_view.dart';
@@ -14,6 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await CacheHelper().init();
+  await LoalNotificationServices.initialize();
+  await LoalNotificationServices.requestPermission();
+
+
   Bloc.observer = AppBlocObserver();
   runApp(const TaskyApp());
 }
@@ -56,15 +62,18 @@ class CustomSplashScreen extends StatelessWidget {
                     onFinish: (data) async {
                       bool isNew =
                           await CacheHelper().getData(key: 'NewUser') ?? false;
+                      bool isLogin =
+                          await CacheHelper().getData(key: 'Login') ?? false;
                       if (isLast) {
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) {
-                                  print("isNew  $isNew");
                                   return isNew == false
                                       ? OnboardingView()
+                                      : isLogin
+                                      ? TasksView()
                                       : LoginView();
                                 },
                           ),

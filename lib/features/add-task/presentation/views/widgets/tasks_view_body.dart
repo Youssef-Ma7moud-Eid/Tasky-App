@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
@@ -34,7 +35,6 @@ class _TaskViewBodyState extends State<TaskViewBody> {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: SingleChildScrollView(
-          // 👈 يخلي الصفحة كلها تتحرك مع الكيبورد
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,6 +48,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                   GestureDetector(
                     onTap: () async {
                       await AuthCubit.get(context).logout();
+                      await CacheHelper().saveData(key: 'Login', value: false);
                     },
                     child: BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {

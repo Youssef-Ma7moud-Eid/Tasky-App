@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/functions/validator.dart';
+import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/custom_button.dart';
@@ -86,7 +87,12 @@ class LoginViewBody extends StatelessWidget {
                         animType: AnimType.rightSlide,
                         title: 'Success',
                         desc: "Login successful",
-                        btnOkOnPress: () {
+                        btnOkOnPress: () async {
+                          await CacheHelper().saveData(
+                            key: 'Login',
+                            value: true,
+                          );
+
                           Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
