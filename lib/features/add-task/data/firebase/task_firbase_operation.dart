@@ -36,10 +36,19 @@ class TaskFirebaseOperation {
   }
 
   static Future<void> updateTask(String taskId, TaskModel task) async {
+    final notificationId = generateStableId(task.id!);
+
+    LoalNotificationServices.cancelNotifications(notificationId);
+    if (task.isCompleted == false) {
+      LoalNotificationServices.showScheduledNotification(notificationId, task);
+    }
     await taskRef.doc(taskId).set(task);
   }
 
   static Future<void> deleteTask(String taskId) async {
+    final notificationId = generateStableId(taskId);
+
+    LoalNotificationServices.cancelNotifications(notificationId);
     await taskRef.doc(taskId).delete();
   }
 

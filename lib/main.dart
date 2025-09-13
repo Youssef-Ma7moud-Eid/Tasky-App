@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tasky/core/bloc_observer/bloc_observer.dart';
 import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
@@ -14,11 +17,23 @@ import 'package:tasky/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Cache
   await CacheHelper().init();
+
+  // Local notifications
   await LoalNotificationServices.initialize();
   await LoalNotificationServices.requestPermission();
 
+  // Battery optimization (Android only)
+  if (Platform.isAndroid) {
+    await Permission.ignoreBatteryOptimizations.request();
+    // optionally open settings if still denied
+    // await LoalNotificationServices.requestBatteryOptimizationException();
+  }
 
   Bloc.observer = AppBlocObserver();
   runApp(const TaskyApp());

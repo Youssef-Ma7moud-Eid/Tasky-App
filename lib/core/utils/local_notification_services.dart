@@ -78,11 +78,8 @@ class LoalNotificationServices {
     final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
     log('Current Timezone: ${tz.local.name}');
-    log(DateTime.now().year.toString());
-    log(DateTime.now().month.toString());
-    log(DateTime.now().day.toString());
-    log(DateTime.now().hour.toString());
-    log(DateTime.now().minute.toString());
+   
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       task.title,
@@ -100,9 +97,10 @@ class LoalNotificationServices {
     );
   }
 
- static Future<void> requestPermission() async {
-  await Permission.notification.request();
-}
+  static Future<void> requestPermission() async {
+    await Permission.notification.request();
+  }
+
   static void cancelNotifications(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
