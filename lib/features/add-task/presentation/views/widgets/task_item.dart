@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
+import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 
 class TaskItem extends StatelessWidget {
@@ -34,24 +35,30 @@ class TaskItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
+          GestureDetector(
+            onTap: () async {
+              task.isCompleted = !task.isCompleted;
+              await TaskFirebaseOperation.updateTask(task.id!, task);
+            },
+            child: Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: task.isCompleted
+                      ? AppColors.primaryColor
+                      : AppColors.subTitleColor,
+                  width: 2,
+                ),
                 color: task.isCompleted
                     ? AppColors.primaryColor
-                    : AppColors.subTitleColor,
-                width: 2,
+                    : Colors.transparent,
               ),
-              color: task.isCompleted
-                  ? AppColors.primaryColor
-                  : Colors.transparent,
+              child: task.isCompleted
+                  ? const Icon(Icons.check, size: 18, color: Colors.white)
+                  : null,
             ),
-            child: task.isCompleted
-                ? const Icon(Icons.check, size: 18, color: Colors.white)
-                : null,
           ),
           const SizedBox(width: 16),
 

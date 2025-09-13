@@ -28,7 +28,7 @@ class _ShowPriorityDialogState extends State<ShowPriorityDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       insetPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
           spacing: 10,
