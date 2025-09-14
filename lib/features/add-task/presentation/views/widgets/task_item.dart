@@ -38,7 +38,6 @@ class TaskItem extends StatelessWidget {
           GestureDetector(
             onTap: () async {
               task.isCompleted = !task.isCompleted;
-              
               await TaskFirebaseOperation.updateTask(task.id!, task);
             },
             child: Container(

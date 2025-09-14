@@ -48,8 +48,8 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
         _priorityNotifier.value = 1;
         showModalBottomSheet(
           sheetAnimationStyle: AnimationStyle(
-            duration: Duration(milliseconds: 700),
-            reverseDuration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 500),
+            reverseDuration: Duration(milliseconds: 600),
             curve: Curves.fastLinearToSlowEaseIn,
             reverseCurve: Curves.easeInOutCubic,
           ),

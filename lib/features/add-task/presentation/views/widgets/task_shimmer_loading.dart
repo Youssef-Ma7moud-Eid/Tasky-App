@@ -10,7 +10,7 @@ class TaskShimmerLoading extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: ListView.builder(
-        itemCount: 6, // عدد العناصر الوهمية
+        itemCount: 6, 
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 15),

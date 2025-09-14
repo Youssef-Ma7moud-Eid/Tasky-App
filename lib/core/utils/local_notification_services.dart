@@ -10,7 +10,9 @@ import 'package:timezone/timezone.dart' as tz;
 class LoalNotificationServices {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  static onTap(NotificationResponse notificationResponse) {}
+  static onTap(NotificationResponse notificationResponse) {
+    
+  }
   static Future<void> initialize() async {
     InitializationSettings settings = InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
