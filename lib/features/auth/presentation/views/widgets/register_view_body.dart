@@ -104,8 +104,10 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               ),
               SizedBox(height: 10),
               TextFormFieldHelper(
-                onValidate: Validator.validatePassword,
-
+                onValidate: (value) => Validator.validateConfirmPassword(
+                  value,
+                  confirmPassword.text,
+                ),
                 controller: confirmPassword,
                 hint: "confirm password...",
                 isPassword: true,
@@ -124,13 +126,13 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 child: BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is SuccessAuthState) {
-                      Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Success sign Up"),
                           backgroundColor: Colors.green,
                         ),
                       );
+                      Navigator.pop(context);
                     } else if (state is FailureAuthState) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

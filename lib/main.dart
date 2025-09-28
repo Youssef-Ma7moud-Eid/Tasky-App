@@ -31,8 +31,7 @@ void main() async {
   // Battery optimization (Android only)
   if (Platform.isAndroid) {
     await Permission.ignoreBatteryOptimizations.request();
-    // optionally open settings if still denied
-    // await LoalNotificationServices.requestBatteryOptimizationException();
+
   }
 
   Bloc.observer = AppBlocObserver();
