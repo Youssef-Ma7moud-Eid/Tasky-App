@@ -65,13 +65,14 @@ Tasky leverages **Firebase Authentication**, **Isar Database**, **Cubit State Ma
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/18760730-1713-402c-a336-e2ade2a7c367" width="220" />
+   <img src="https://github.com/user-attachments/assets/71528a88-0580-4b0a-a2cb-2c93d37ed9a3" width="220" />
+
   <img src="https://github.com/user-attachments/assets/b47380ba-20a1-42da-886d-c56ac0cf1443" width="220" />
   <img src="https://github.com/user-attachments/assets/61a73e50-0937-4536-a7b5-cd5c296a155a" width="220" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/71528a88-0580-4b0a-a2cb-2c93d37ed9a3" width="220" />
+   <img src="https://github.com/user-attachments/assets/18760730-1713-402c-a336-e2ade2a7c367" width="220" />
   <img src="https://github.com/user-attachments/assets/230a8f45-913a-43a9-8841-cda8737691de" width="220" />
   <img src="https://github.com/user-attachments/assets/bc900597-ccea-4331-8052-dfe69e827f6e" width="220" />
 </p>
