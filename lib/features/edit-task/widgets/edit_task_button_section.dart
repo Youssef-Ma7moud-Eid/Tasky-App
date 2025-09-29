@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/widgets/show_confirm_dialog.dart';
-import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
+import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/edit-task/widgets/edit_view_body.dart';
 
 class EditTaskButtonSection extends StatelessWidget {
@@ -66,8 +66,8 @@ class EditTaskButtonSection extends StatelessWidget {
               }
 
               if (isChange) {
-                await TaskFirebaseOperation.updateTask(
-                  widget.taskModel.id!,
+                await TaskLocalDatabaseOperation.updateTask(
+               
                   widget.taskModel,
                 );
 

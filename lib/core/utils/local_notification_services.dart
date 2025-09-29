@@ -67,7 +67,7 @@ class LoalNotificationServices {
   static void showScheduledNotification(int id, TaskModel task) async {
     NotificationDetails details = NotificationDetails(
       android: AndroidNotificationDetails(
-        task.id!,
+        task.id.toString(),
         task.title ?? "No Title",
         importance:
             Importance.max, // make notifiction appear on top  and in app

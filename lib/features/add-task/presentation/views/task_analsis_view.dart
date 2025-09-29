@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_styles.dart';
-import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
+import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/task_charts.dart';
 
@@ -17,7 +17,7 @@ class _TaskAnalysisViewState extends State<TaskAnalysisView> {
   @override
   void initState() {
     super.initState();
-    taskStream = TaskFirebaseOperation.getAllTasks();
+    taskStream = TaskLocalDatabaseOperation.getAllTasks();
   }
 
   @override

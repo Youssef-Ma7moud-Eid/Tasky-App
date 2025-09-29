@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/widgets/show_date_dialog.dart';
+import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/show_dialog_ontap.dart';
 import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
@@ -11,7 +12,6 @@ import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/core/widgets/show_confirm_dialog.dart';
 import 'package:tasky/core/widgets/show_priority_dialog.dart';
-import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
 
 class EditTaskViewBody extends StatefulWidget {
   const EditTaskViewBody({super.key, required this.taskModel});
@@ -241,8 +241,8 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
                   action: "Delete",
                   message: "Are you sure you want to delete this task?",
                   onConfirm: () async {
-                    await TaskFirebaseOperation.deleteTask(
-                      widget.taskModel.id!,
+                    await TaskLocalDatabaseOperation.deleteTask(
+                      widget.taskModel.id,
                     );
                     Navigator.pop(context);
                   },
@@ -250,7 +250,7 @@ class _EditTaskViewBodyState extends State<EditTaskViewBody> {
               },
               child: DeleteTaskSection(),
             ),
-            SizedBox(height: MediaQuery.sizeOf(context).height*0.27),
+            SizedBox(height: MediaQuery.sizeOf(context).height * 0.27),
 
             EditTaskButtonSection(
               widget: widget,

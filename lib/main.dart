@@ -9,6 +9,7 @@ import 'package:tasky/core/bloc_observer/bloc_observer.dart';
 import 'package:tasky/core/services/cache_helper.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/local_notification_services.dart';
+import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/presentation/views/tasks_view.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
 import 'package:tasky/features/auth/presentation/views/login_view.dart';
@@ -18,20 +19,15 @@ import 'package:tasky/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Cache
   await CacheHelper().init();
-
-  // Local notifications
+  await TaskLocalDatabaseOperation.setup();
   await LoalNotificationServices.initialize();
   await LoalNotificationServices.requestPermission();
 
-  // Battery optimization (Android only)
   if (Platform.isAndroid) {
     await Permission.ignoreBatteryOptimizations.request();
-
   }
 
   Bloc.observer = AppBlocObserver();

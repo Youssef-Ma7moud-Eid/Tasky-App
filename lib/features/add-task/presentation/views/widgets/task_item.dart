@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
 import 'package:tasky/core/utils/assets.dart';
-import 'package:tasky/features/add-task/data/firebase/task_firbase_operation.dart';
+import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 
 class TaskItem extends StatelessWidget {
@@ -38,7 +38,7 @@ class TaskItem extends StatelessWidget {
           GestureDetector(
             onTap: () async {
               task.isCompleted = !task.isCompleted;
-              await TaskFirebaseOperation.updateTask(task.id!, task);
+              await TaskLocalDatabaseOperation.updateTask(task);
             },
             child: Container(
               width: 28,
