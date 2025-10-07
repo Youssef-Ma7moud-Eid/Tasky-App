@@ -13,15 +13,27 @@ import 'package:tasky/features/auth/presentation/views/register_view.dart';
 import 'package:tasky/features/auth/presentation/views/widgets/custom_check_auth.dart';
 import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
 
-class LoginViewBody extends StatelessWidget {
+class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
 
   @override
+  State<LoginViewBody> createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<LoginViewBody> {
+  bool view = false;
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool view = false;
-    final GlobalKey<FormState> formKey = GlobalKey();
-    final TextEditingController email = TextEditingController();
-    final TextEditingController password = TextEditingController();
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -145,7 +157,7 @@ class LoginViewBody extends StatelessWidget {
                         subTitle: "Register",
                       ),
                     )
-                  : SizedBox(),
+                  : SizedBox.shrink(),
             ],
           ),
         ),
