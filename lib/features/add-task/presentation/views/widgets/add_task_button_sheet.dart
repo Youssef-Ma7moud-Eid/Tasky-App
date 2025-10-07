@@ -66,8 +66,8 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
               ),
               child: DraggableScrollableSheet(
                 expand: false,
-                initialChildSize: 0.3,
-                minChildSize: 0.3,
+                initialChildSize: 0.4,
+                minChildSize: 0.4,
                 maxChildSize: 0.9,
                 builder: (context, scrollController) {
                   return SingleChildScrollView(

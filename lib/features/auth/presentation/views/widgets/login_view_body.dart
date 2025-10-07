@@ -139,25 +139,23 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 ),
               ),
               SizedBox(height: MediaQuery.sizeOf(context).height * 0.25),
-              MediaQuery.of(context).viewInsets.bottom == 0
-                  ? Center(
-                      child: CustomCheckAuth(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                    return RegisterView();
-                                  },
-                            ),
-                          );
+
+              Center(
+                child: CustomCheckAuth(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return RegisterView();
                         },
-                        title: "Don’t have an account?",
-                        subTitle: "Register",
                       ),
-                    )
-                  : SizedBox.shrink(),
+                    );
+                  },
+                  title: "Don’t have an account?",
+                  subTitle: "Register",
+                ),
+              ),
             ],
           ),
         ),

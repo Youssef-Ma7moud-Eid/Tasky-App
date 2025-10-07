@@ -79,9 +79,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onTapOutside: (event) {
-        FocusScope.of(context).unfocus();
-      },
+      autofocus: false,
+
+      readOnly: false,
+
       controller: widget.controller,
       validator: widget.onValidate,
       onChanged: widget.onChanged,

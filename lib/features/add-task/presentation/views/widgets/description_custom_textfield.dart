@@ -17,6 +17,11 @@ class DescriptionCustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      autofocus: false,
+
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       controller: controller,
       maxLines: 2,
       maxLength: 150,
@@ -75,6 +80,7 @@ class DescriptionCustomTextField extends StatelessWidget {
             ),
           ],
         ),
+
         border: InputBorder.none,
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,

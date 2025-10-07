@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/core/dialogs/app_toasts.dart';
 import 'package:tasky/core/functions/validator.dart';
 import 'package:tasky/core/utils/app_colors.dart';
 import 'package:tasky/core/utils/app_styles.dart';
@@ -9,6 +10,7 @@ import 'package:tasky/features/auth/presentation/manager/auth_state.dart';
 import 'package:tasky/features/auth/presentation/views/login_view.dart';
 import 'package:tasky/features/auth/presentation/views/widgets/custom_check_auth.dart';
 import 'package:tasky/features/auth/presentation/views/widgets/text_form_field_helper.dart';
+import 'package:toastification/toastification.dart';
 
 class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
@@ -126,19 +128,20 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 child: BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is SuccessAuthState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Success sign Up"),
-                          backgroundColor: Colors.green,
-                        ),
+                      AppToast.showToast(
+                        context: context,
+                        title: 'Success',
+                        description: "Success sign Up",
+                        type: ToastificationType.success,
                       );
+
                       Navigator.pop(context);
                     } else if (state is FailureAuthState) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.message),
-                          backgroundColor: Colors.red,
-                        ),
+                      AppToast.showToast(
+                        context: context,
+                        title: 'Error',
+                        description: '${state.message}',
+                        type: ToastificationType.error,
                       );
                     }
                   },
@@ -154,25 +157,22 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 ),
               ),
               SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
-              MediaQuery.of(context).viewInsets.bottom == 0
-                  ? Center(
-                      child: CustomCheckAuth(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                    return LoginView();
-                                  },
-                            ),
-                          );
+              Center(
+                child: CustomCheckAuth(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return LoginView();
                         },
-                        title: "Already have an account? ",
-                        subTitle: "Login",
                       ),
-                    )
-                  : SizedBox(),
+                    );
+                  },
+                  title: "Already have an account? ",
+                  subTitle: "Login",
+                ),
+              ),
             ],
           ),
         ),

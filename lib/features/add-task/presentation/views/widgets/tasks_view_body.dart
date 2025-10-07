@@ -7,7 +7,6 @@ import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/empty_tasks_view_body.dart';
-import 'package:tasky/features/add-task/presentation/views/widgets/task_shimmer_loading.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/tasks_loaded_body.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_state.dart';
@@ -25,6 +24,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
   String queryData = '';
   String selectedValue = "Today";
   final List<String> options = ["All", "Today", "Tomorrow"];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,7 +40,6 @@ class _TaskViewBodyState extends State<TaskViewBody> {
             children: [
               const SizedBox(height: 20),
 
-              /// App Bar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,7 +94,6 @@ class _TaskViewBodyState extends State<TaskViewBody> {
 
               const SizedBox(height: 15),
 
-              /// Search field
               TextFormFieldHelper(
                 onChanged: (query) {
                   setState(() {
@@ -110,7 +108,6 @@ class _TaskViewBodyState extends State<TaskViewBody> {
 
               const SizedBox(height: 20),
 
-              /// Dropdown
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
                 decoration: BoxDecoration(
@@ -149,20 +146,15 @@ class _TaskViewBodyState extends State<TaskViewBody> {
 
               const SizedBox(height: 20),
 
-              /// Tasks Section
               SizedBox(
-                height:
-                    MediaQuery.of(context).size.height *
-                    0.65, 
+                height: MediaQuery.of(context).size.height * 0.65,
                 child: StreamBuilder<List<TaskModel>>(
                   stream: TaskLocalDatabaseOperation.searchTasks(
                     queryData,
                     selectedValue,
                   ),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const TaskShimmerLoading();
-                    } else if (snapshot.hasError) {
+                    if (snapshot.hasError) {
                       return const Center(child: Text('Something went wrong'));
                     } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       final tasks = snapshot.data!;

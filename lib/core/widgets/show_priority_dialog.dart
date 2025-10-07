@@ -90,9 +90,8 @@ class _ShowPriorityDialogState extends State<ShowPriorityDialog> {
               onTap: () {
                 widget.priorityNotifier.value = selectedPriority;
                 log(selectedPriority.toString());
-                Navigator.pop(context, selectedPriority);
+                Navigator.pop(context);
               },
-              selectedPriority: selectedPriority,
             ),
           ],
         ),
