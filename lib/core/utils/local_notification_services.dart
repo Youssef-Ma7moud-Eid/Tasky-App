@@ -71,7 +71,7 @@ class LoalNotificationServices {
             Importance.max, // make notifiction appear on top  and in app
         priority: Priority.high, // make notifiction appear on top  and in app
         playSound: true,
-        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        icon: '@mipmap/ic_launcher', // <- Flutter’s default blue logo
       ),
     );
     tz.initializeTimeZones();

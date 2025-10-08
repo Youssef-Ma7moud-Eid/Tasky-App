@@ -125,5 +125,3 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/icons/app-icon.png"
-  notification_icon: true
-  notification_icon_image: "assets/icons/notification_icon.png"
