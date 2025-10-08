@@ -10,9 +10,7 @@ import 'package:timezone/timezone.dart' as tz;
 class LoalNotificationServices {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  static onTap(NotificationResponse notificationResponse) {
-    
-  }
+  static onTap(NotificationResponse notificationResponse) {}
   static Future<void> initialize() async {
     InitializationSettings settings = InitializationSettings(
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
@@ -73,6 +71,7 @@ class LoalNotificationServices {
             Importance.max, // make notifiction appear on top  and in app
         priority: Priority.high, // make notifiction appear on top  and in app
         playSound: true,
+        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
       ),
     );
     tz.initializeTimeZones();
@@ -80,7 +79,6 @@ class LoalNotificationServices {
     final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(currentTimeZone));
     log('Current Timezone: ${tz.local.name}');
-   
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
