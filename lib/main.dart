@@ -90,8 +90,8 @@ class CustomSplashScreen extends StatelessWidget {
                         );
                       }
                     },
-                    delay: Duration(milliseconds: 800 * index),
-                    duration: const Duration(milliseconds: 900),
+                    delay: Duration(milliseconds: 600 * index),
+                    duration: const Duration(milliseconds: 700),
                     child: Text(
                       letter,
                       style: TextStyle(
@@ -102,8 +102,8 @@ class CustomSplashScreen extends StatelessWidget {
                     ),
                   )
                 : FadeOutDown(
-                    delay: Duration(milliseconds: 800 * index),
-                    duration: const Duration(milliseconds: 900),
+                    delay: Duration(milliseconds: 600 * index),
+                    duration: const Duration(milliseconds: 700),
 
                     child: Text(
                       letter,
