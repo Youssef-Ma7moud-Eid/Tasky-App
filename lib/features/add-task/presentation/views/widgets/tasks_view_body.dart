@@ -7,6 +7,7 @@ import 'package:tasky/core/utils/assets.dart';
 import 'package:tasky/features/add-task/data/local-dataBase/task_local_database_operation.dart';
 import 'package:tasky/features/add-task/data/model/task_model.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/empty_tasks_view_body.dart';
+import 'package:tasky/features/add-task/presentation/views/widgets/task_shimmer_loading.dart';
 import 'package:tasky/features/add-task/presentation/views/widgets/tasks_loaded_body.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_cubit.dart';
 import 'package:tasky/features/auth/presentation/manager/auth_state.dart';
@@ -24,10 +25,8 @@ class _TaskViewBodyState extends State<TaskViewBody> {
   String queryData = '';
   String selectedValue = "Today";
   final List<String> options = ["All", "Today", "Tomorrow"];
-@override
-  void initState() {
-   
-  }
+  @override
+  void initState() {}
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -162,6 +161,9 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                     } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       final tasks = snapshot.data!;
                       return TasksLoadedBody(tasks: tasks);
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return TaskShimmerLoading();
                     } else {
                       return const EmptyTasksViewBody();
                     }
