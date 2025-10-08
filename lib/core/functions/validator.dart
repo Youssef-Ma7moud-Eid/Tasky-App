@@ -1,13 +1,13 @@
-abstract class AppValues {
+abstract class AppKeys {
   static const String emailRegex =
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-  static const String passwordRegex = r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@]{6,}$';
+  static const String passwordRegex = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$';
+
   static const String usernameRegex = r'^[a-zA-Z0-9,.-]+$';
 }
-
 abstract class Validator {
-  static String? validateEmail(String? val) {
-    final RegExp emailRegex = RegExp(AppValues.emailRegex);
+ static String? validateEmail(String? val) {
+    final RegExp emailRegex = RegExp(AppKeys.emailRegex);
     if (val == null || val.trim().isEmpty) {
       return 'Email cannot be empty';
     } else if (!emailRegex.hasMatch(val)) {
@@ -18,7 +18,7 @@ abstract class Validator {
   }
 
   static String? validatePassword(String? val) {
-    final RegExp passwordRegex = RegExp(AppValues.passwordRegex);
+    final RegExp passwordRegex = RegExp(AppKeys.passwordRegex);
     if (val == null || val.isEmpty) {
       return 'Password cannot be empty';
     } else if (!passwordRegex.hasMatch(val)) {

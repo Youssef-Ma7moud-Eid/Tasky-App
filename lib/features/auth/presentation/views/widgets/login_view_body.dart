@@ -143,6 +143,8 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               Center(
                 child: CustomCheckAuth(
                   onTap: () {
+                    email.clear();
+                    password.clear();
                     Navigator.push(
                       context,
                       PageRouteBuilder(

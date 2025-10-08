@@ -82,7 +82,9 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
       autofocus: false,
 
       readOnly: false,
-
+      textInputAction: widget.isPassword
+          ? TextInputAction.done
+          : (widget.action ?? TextInputAction.next),
       controller: widget.controller,
       validator: widget.onValidate,
       onChanged: widget.onChanged,
@@ -99,7 +101,6 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
       keyboardType: widget.keyboardType,
       // inputFormatters: widget.inputFormatters,
       enabled: widget.enabled,
-      textInputAction: widget.action ?? TextInputAction.next,
       focusNode: widget.focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       style: AppStyles.latoRegular14,

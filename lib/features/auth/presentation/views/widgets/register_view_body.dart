@@ -107,7 +107,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               SizedBox(height: 10),
               TextFormFieldHelper(
                 onValidate: (value) => Validator.validateConfirmPassword(
-                  value,
+                  password.text,
                   confirmPassword.text,
                 ),
                 controller: confirmPassword,
