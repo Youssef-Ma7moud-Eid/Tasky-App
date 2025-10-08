@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -74,16 +75,18 @@ class CustomSplashScreen extends StatelessWidget {
                           await CacheHelper().getData(key: 'NewUser') ?? false;
                       bool isLogin =
                           await CacheHelper().getData(key: 'Login') ?? false;
+                      log(isNew.toString());
+                      log(isLogin.toString());
                       if (isLast) {
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) {
-                                  return isNew == false
-                                      ? OnboardingView()
-                                      : isLogin
+                                  return isLogin == true
                                       ? TasksView()
+                                      : isNew == false
+                                      ? OnboardingView()
                                       : LoginView();
                                 },
                           ),

@@ -103,6 +103,7 @@ class _AddTaskButtonSheetState extends State<AddTaskButtonSheet> {
 
                           SizedBox(height: 10),
                           DescriptionCustomTextField(
+                            isLast: true,
                             controller: subTitle,
                             dayValueNotifier: _dayNotifier,
                             priorityValueNotifier: _priorityNotifier,

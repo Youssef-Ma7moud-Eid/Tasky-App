@@ -9,16 +9,22 @@ class DescriptionCustomTextField extends StatelessWidget {
     required this.priorityValueNotifier,
     required this.dayValueNotifier,
     this.controller,
+    this.isLast,
+    this.action,
   });
   final ValueNotifier<int> priorityValueNotifier;
   final ValueNotifier<DateTime> dayValueNotifier;
   final TextEditingController? controller;
-
+  final TextInputAction? action;
+  final bool? isLast;
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: false,
       readOnly: false,
+      textInputAction: isLast == true
+          ? TextInputAction.done
+          : TextInputAction.next,
 
       controller: controller,
       maxLines: 2,

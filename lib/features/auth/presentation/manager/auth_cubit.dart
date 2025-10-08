@@ -38,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LogoutLoadingState());
     dynamic check = await AuthFirebaseOperation.logout();
     if (check == true) {
-      await CacheHelper().removeData(key: 'NewUser');
+      await CacheHelper().saveData(key: 'Login', value: false);
       emit(LogoutSuccessState());
     } else {
       emit(LogoutFauilreState(message: 'Error in Logout from Account'));

@@ -18,7 +18,6 @@ class TextFormFieldHelper extends StatefulWidget {
   final IconData? icon;
   final TextInputAction? action;
   final FocusNode? focusNode;
-
   final BorderRadius? borderRadius;
   final bool? isMobile;
 

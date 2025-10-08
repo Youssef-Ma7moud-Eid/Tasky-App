@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/services/cache_helper.dart';
@@ -25,8 +27,26 @@ class _TaskViewBodyState extends State<TaskViewBody> {
   String queryData = '';
   String selectedValue = "Today";
   final List<String> options = ["All", "Today", "Tomorrow"];
+  late Stream<List<TaskModel>> _tasksStream;
+
   @override
-  void initState() {}
+  void initState() {
+    super.initState();
+    _tasksStream = TaskLocalDatabaseOperation.searchTasks(
+      queryData,
+      selectedValue,
+    );
+  }
+
+  void _refreshTasksStream() {
+    setState(() {
+      _tasksStream = TaskLocalDatabaseOperation.searchTasks(
+        queryData,
+        selectedValue,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,7 +69,6 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                   GestureDetector(
                     onTap: () async {
                       await AuthCubit.get(context).logout();
-                      await CacheHelper().saveData(key: 'Login', value: false);
                     },
                     child: BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
@@ -61,12 +80,11 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                             ),
                           );
                         } else if (state is LogoutSuccessState) {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (_) => const LoginView(),
                             ),
-                            (route) => false,
                           );
                         }
                       },
@@ -98,9 +116,8 @@ class _TaskViewBodyState extends State<TaskViewBody> {
 
               TextFormFieldHelper(
                 onChanged: (query) {
-                  setState(() {
-                    queryData = query ?? '';
-                  });
+                  queryData = query ?? '';
+                  _refreshTasksStream();
                 },
                 hint: 'Search for your task...',
                 prefixIcon: Image.asset(Assets.iconsSearchIcon),
@@ -132,9 +149,8 @@ class _TaskViewBodyState extends State<TaskViewBody> {
                       color: AppColors.titleColor,
                     ),
                     onChanged: (String? newValue) {
-                      setState(() {
-                        selectedValue = newValue!;
-                      });
+                      selectedValue = newValue!;
+                      _refreshTasksStream();
                     },
                     items: options.map((String value) {
                       return DropdownMenuItem<String>(
@@ -151,10 +167,7 @@ class _TaskViewBodyState extends State<TaskViewBody> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.65,
                 child: StreamBuilder<List<TaskModel>>(
-                  stream: TaskLocalDatabaseOperation.searchTasks(
-                    queryData,
-                    selectedValue,
-                  ),
+                  stream: _tasksStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Center(child: Text('Something went wrong'));
